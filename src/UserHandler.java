@@ -6,7 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 class UserHandler extends DefaultHandler {
-    DBManager DB;
+    private DBManager DB;
+    /**
+     * nameOrTitle :- query 1 search for publications by author name or title
+     * queryType :- 0 for search by author name, 1 for search by title
+     * sortType :-  0 -> sort by reverse date
+     *              1 -> sort by relevance
+     *              2 -> results since a given year
+     *              3 -> result in between two years
+     */
+    private String nameOrTitle;
+    private int queryType;
+    private int sortType;
 
     private boolean bPerson;
     private boolean bTitle;
@@ -15,7 +26,10 @@ class UserHandler extends DefaultHandler {
     private boolean bVolume;
     private boolean bJournalOrBookTitle;
 
-    private List<Person> currentPubAuthors= new ArrayList<>();
+    private boolean isPerson;
+
+    private List<Person> currentPubAuthors = new ArrayList<>();
+    private List<Person> currentSearchList = new ArrayList<>();
     private String name;
     private String title;
     private String pages;
@@ -57,9 +71,14 @@ class UserHandler extends DefaultHandler {
             journalOrBookTitle = "";
         }
         if((atts.getLength()) > 0){
-            if((atts.getValue("key") != null) && (atts.getValue("mdate") != null)){
-                pubType = qName;
-                mDate = atts.getValue("mdate");
+            if((atts.getValue("key") != null)){
+                if((atts.getValue("mdate") != null)) {
+                    pubType = qName;
+                    mDate = atts.getValue("mdate");
+                }
+                else{
+                    isPerson = true;
+                }
             }
         }
     }
@@ -67,13 +86,22 @@ class UserHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException{
         if(qName.equals("author") || qName.equals("editor")){
-            Person tempPerson = DB.personExist(name);
-            if(tempPerson == null) {
-                tempPerson = new Person(name);
+            if(queryType == 0 && name.equals(nameOrTitle)) {
+                Person tempPerson = DB.personExist(name);
+                if (tempPerson == null) {
+                    tempPerson = new Person(name);
+                }
+                currentPubAuthors.add(tempPerson);
             }
-            currentPubAuthors.add(tempPerson);
         }
-        if(qName.equals(pubType) && !(qName.equals("www"))){
+        if(qName.equals(pubType)){
+            if(isPerson){
+                for(Person p : currentPubAuthors){
+                    if(!p.getName().equals(nameOrTitle)) {
+                        currentSearchList.add(p);   ///Only add to currSearchList if it's not the same as nameOrTitle
+                    }
+                }
+            }
             List<Person> authors = new ArrayList<Person>();
             for(Person p : currentPubAuthors){
                 authors.add(p);
@@ -112,7 +140,7 @@ class UserHandler extends DefaultHandler {
         }
     }
 
-    public UserHandler(DBManager OuterDB){
+    public UserHandler(DBManager OuterDB, String nameOrTitle, int queryType, int sortType){
         DB = OuterDB;
     }
 }
