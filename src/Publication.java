@@ -1,30 +1,40 @@
 import java.util.*;
 
-public class Publication {
-    private List<Person> authors;
+public class Publication implements Comparable<Publication> {
+    private HashSet<String> authors;
     private String title;
     private String pages;
     private int year;
     private String volume;
     private String journalOrBookTitle;
-    private String mDate;
 
-    public Publication(List i_authors, String i_title, String i_pages, String i_year, String i_volume, String i_journalOrBookTitle, String i_mDate){
-        authors = new ArrayList<Person>();
+    private int matchCount;
+
+    public Publication(HashSet<String> i_authors, String i_title, String i_pages, String i_year, String i_volume, String i_journalOrBookTitle){
+        authors = new HashSet<>();
         title = i_title;
         authors = i_authors;
         pages = i_pages;
         year = Integer.parseInt(i_year);
         volume = i_volume;
         journalOrBookTitle = i_journalOrBookTitle;
-        mDate = i_mDate;
+
+        matchCount = 0;
     }
 
-    public List<Person> getAuthors() {
+    static Comparator<Publication> matchCountOrder = new Comparator<Publication>() {
+        @Override
+        public int compare(Publication p1, Publication p2) {
+            return p2.matchCount - p1.matchCount;
+        }
+    };
+
+
+    public HashSet<String> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Person> authors) {
+    public void setAuthors(HashSet<String> authors) {
         this.authors = authors;
     }
 
@@ -68,11 +78,22 @@ public class Publication {
         this.journalOrBookTitle = journalOrBookTitle;
     }
 
-    public String getmDate() {
-        return mDate;
+    public int getMatchCount() {
+        return matchCount;
     }
 
-    public void setmDate(String mDate) {
-        this.mDate = mDate;
+    public void setMatchCount(int matchCount) {
+        this.matchCount = matchCount;
+    }
+
+
+    @Override
+    public int compareTo(Publication p){
+        if (p.year > year)
+            return 1;
+        else if (p.year < year)
+            return -1;
+        else
+            return 0;
     }
 }

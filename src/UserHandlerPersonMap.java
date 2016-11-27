@@ -47,7 +47,6 @@ public class UserHandlerPersonMap extends DefaultHandler {
                 for(String s : currAuthorSet){
                     tempCurrSet.add(s);
                 }
-                System.out.println();
                 DB.addAliasMapElement(key, tempCurrSet);
             }
             currAuthorSet.clear();

@@ -2,8 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 class UserHandler extends DefaultHandler {
     private DBManager DB;
@@ -15,7 +14,7 @@ class UserHandler extends DefaultHandler {
      *              2 -> results since a given year
      *              3 -> result in between two years
      */
-    private String nameOrTitle;
+    private HashSet<String> nameSetOrTitleSet;
     private int queryType;
     private int sortType;
 
@@ -28,17 +27,25 @@ class UserHandler extends DefaultHandler {
 
     private boolean isPerson;
 
-    private List<Person> currentPubAuthors = new ArrayList<>();
-    private List<Person> currentSearchList = new ArrayList<>();
+    private HashSet<String> currentPubAuthors = new HashSet<>();
+    private HashSet<String> currentSearchList = new HashSet<>();
     private String name;
     private String title;
     private String pages;
     private String year;
     private String volume;
     private String journalOrBookTitle;
-    private String mDate;
+    private int matchCount;
 
     private String pubType;
+
+    private boolean foundPublication;
+
+    public UserHandler(DBManager OuterDB, HashSet<String> i_nameSetOrTitleSet, int i_queryType){
+        DB = OuterDB;
+        nameSetOrTitleSet = i_nameSetOrTitleSet;
+        queryType = i_queryType;
+    }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
@@ -47,6 +54,7 @@ class UserHandler extends DefaultHandler {
             name = "";
         }
         if(qName.equals("title")){
+            matchCount = 0;
             bTitle = true;
             title = "";
         }
@@ -72,43 +80,71 @@ class UserHandler extends DefaultHandler {
         }
         if((atts.getLength()) > 0){
             if((atts.getValue("key") != null)){
-                if((atts.getValue("mdate") != null)) {
-                    pubType = qName;
-                    mDate = atts.getValue("mdate");
-                }
-                else{
-                    isPerson = true;
-                }
+                pubType = qName;
             }
         }
     }
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException{
-        if(qName.equals("author") || qName.equals("editor")){
-            if(queryType == 0 && name.equals(nameOrTitle)) {
-                Person tempPerson = DB.personExist(name);
-                if (tempPerson == null) {
-                    tempPerson = new Person(name);
+        if(queryType == 0){
+            if(qName.equals("author") || qName.equals("editor")){
+                currentPubAuthors.add(name);
+                if(nameSetOrTitleSet.contains(name)){
+                    foundPublication = true;
                 }
-                currentPubAuthors.add(tempPerson);
+            }
+
+            if(qName.equals(pubType)){
+                if(foundPublication == true){
+                    HashSet<String> authors = new HashSet<>();
+                    for(String aName : currentPubAuthors){
+                        authors.add(aName);
+                    }
+                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
+                    DB.addPublication(tempPublication);
+                    foundPublication = false;
+                }
+                currentPubAuthors.clear();
             }
         }
-        if(qName.equals(pubType)){
-            if(isPerson){
-                for(Person p : currentPubAuthors){
-                    if(!p.getName().equals(nameOrTitle)) {
-                        currentSearchList.add(p);   ///Only add to currSearchList if it's not the same as nameOrTitle
+        else if(queryType == 1){
+            if(qName.equals("author") || qName.equals("editor")){
+                currentPubAuthors.add(name);
+            }
+            if(qName.equals("title")){
+                HashSet<String> titleParts = new HashSet<>();
+                StringTokenizer st = new StringTokenizer(title, " .()-,");
+                while (st.hasMoreTokens()){
+                    titleParts.add(st.nextToken().toLowerCase());
+                }
+                for(String tName : nameSetOrTitleSet){
+                    HashSet<String> tNameParts = new HashSet<>();
+                    StringTokenizer st2 = new StringTokenizer(tName, " .()-,");
+                    while(st2.hasMoreTokens()){
+                        tNameParts.add(st2.nextToken().toLowerCase());
+                    }
+                    for(String subPart : tNameParts){
+                        if(titleParts.contains(subPart)){
+                            foundPublication = true;
+                            matchCount++;
+                        }
                     }
                 }
             }
-            List<Person> authors = new ArrayList<Person>();
-            for(Person p : currentPubAuthors){
-                authors.add(p);
+            if(qName.equals(pubType)){
+                if(foundPublication == true){
+                    HashSet<String> authors = new HashSet<>();
+                    for(String aName : currentPubAuthors){
+                        authors.add(aName);
+                    }
+                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
+                    tempPublication.setMatchCount(matchCount);
+                    DB.addPublication(tempPublication);
+                    foundPublication = false;
+                }
+                currentPubAuthors.clear();
             }
-            currentPubAuthors.clear();
-            Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle, mDate);
-            DB.addPublication(tempPublication);
         }
     }
 
@@ -140,7 +176,4 @@ class UserHandler extends DefaultHandler {
         }
     }
 
-    public UserHandler(DBManager OuterDB, String nameOrTitle, int queryType, int sortType){
-        DB = OuterDB;
-    }
 }
