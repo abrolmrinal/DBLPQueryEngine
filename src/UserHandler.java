@@ -14,7 +14,7 @@ class UserHandler extends DefaultHandler {
      *              2 -> results since a given year
      *              3 -> result in between two years
      */
-    private HashSet<String> nameSetOrTitleSet;
+    private LinkedHashSet<String> nameSetOrTitleSet;
     private int queryType;
     private int sortType;
 
@@ -28,13 +28,14 @@ class UserHandler extends DefaultHandler {
     private boolean isPerson;
 
     private HashSet<String> currentPubAuthors = new HashSet<>();
-    private HashSet<String> currentSearchList = new HashSet<>();
     private String name;
     private String title;
     private String pages;
     private String year;
     private String volume;
     private String journalOrBookTitle;
+
+    private int prevMatchCountAuthor;
     private int matchCountAuthor;
     private int matchCountTitle;
 
@@ -42,12 +43,25 @@ class UserHandler extends DefaultHandler {
 
     private boolean foundPublication;
 
-    public UserHandler(DBManager OuterDB, HashSet<String> i_nameSetOrTitleSet, int i_queryType){
+    private String aName;
+    private LinkedHashSet<String> aNameParts;
+
+    public UserHandler(DBManager OuterDB, LinkedHashSet<String> i_nameSetOrTitleSet, int i_queryType){
         DB = OuterDB;
         nameSetOrTitleSet = i_nameSetOrTitleSet;
         queryType = i_queryType;
+        prevMatchCountAuthor = -1;
         matchCountAuthor = 0;
         matchCountTitle = 0;
+
+        if(queryType == 0){
+            aName = nameSetOrTitleSet.iterator().next();
+            aNameParts = new LinkedHashSet<>();
+            StringTokenizer st = new StringTokenizer(aName, " -");
+            while (st.hasMoreTokens()) {
+                aNameParts.add(st.nextToken().toLowerCase());
+            }
+        }
     }
 
     @Override
@@ -95,25 +109,31 @@ class UserHandler extends DefaultHandler {
             if(qName.equals("author") || qName.equals("editor")){
                 currentPubAuthors.add(name);
 
-                HashSet<String> nameParts = new HashSet<>();
-                StringTokenizer st2 = new StringTokenizer(name, " -");
-                while(st2.hasMoreTokens()){
-                    nameParts.add(st2.nextToken().toLowerCase());
+                if(nameSetOrTitleSet.contains(name.toLowerCase())){
+                    if(aName.equals(name.toLowerCase())){
+                        prevMatchCountAuthor = 1001;
+                    }
+                    else {
+                        prevMatchCountAuthor = 1000;
+                    }
+                    foundPublication = true;
                 }
-
-                for(String aName : nameSetOrTitleSet){
-                    HashSet<String> aNameParts = new HashSet<>();
-                    StringTokenizer st = new StringTokenizer(aName, " -");
-                    while(st.hasMoreTokens()){
-                        aNameParts.add(st.nextToken().toLowerCase());
+                else {
+                    LinkedHashSet<String> nameParts = new LinkedHashSet<>();
+                    StringTokenizer st2 = new StringTokenizer(name, " -");
+                    while (st2.hasMoreTokens()) {
+                        nameParts.add(st2.nextToken().toLowerCase());
                     }
 
-                    for(String subPart : aNameParts){
-                        if(nameParts.contains(subPart)){
+                    for (String subPart : aNameParts) {
+                        if (nameParts.contains(subPart) && subPart.length() >= 3) {
                             matchCountAuthor++;
                             foundPublication = true;
                         }
                     }
+                }
+                if(matchCountAuthor > prevMatchCountAuthor){
+                    prevMatchCountAuthor = matchCountAuthor;
                 }
             }
 
@@ -124,7 +144,8 @@ class UserHandler extends DefaultHandler {
                         authors.add(aName);
                     }
                     Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
-                    tempPublication.setMatchCount(matchCountAuthor);
+                    tempPublication.setMatchCount(prevMatchCountAuthor);
+                    prevMatchCountAuthor = -1;
                     DB.addPublication(tempPublication);
                     foundPublication = false;
                 }
@@ -136,13 +157,13 @@ class UserHandler extends DefaultHandler {
                 currentPubAuthors.add(name);
             }
             if(qName.equals("title")){
-                HashSet<String> titleParts = new HashSet<>();
+                LinkedHashSet<String> titleParts = new LinkedHashSet<>();
                 StringTokenizer st = new StringTokenizer(title, " .(),:;?[]{}_+=!@#$%^&*|'-");
                 while (st.hasMoreTokens()){
                     titleParts.add(st.nextToken().toLowerCase());
                 }
                 for(String tName : nameSetOrTitleSet){
-                    HashSet<String> tNameParts = new HashSet<>();
+                    LinkedHashSet<String> tNameParts = new LinkedHashSet<>();
                     StringTokenizer st2 = new StringTokenizer(tName, " .(),:;?[]{}_+=!@#$%^&*|'-");
                     while(st2.hasMoreTokens()){
                         tNameParts.add(st2.nextToken().toLowerCase());

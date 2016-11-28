@@ -29,7 +29,6 @@ public class Publication implements Comparable<Publication> {
         }
     };
 
-
     public HashSet<String> getAuthors() {
         return authors;
     }

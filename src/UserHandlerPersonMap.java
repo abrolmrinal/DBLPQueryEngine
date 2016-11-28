@@ -2,6 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
@@ -47,12 +48,16 @@ public class UserHandlerPersonMap extends DefaultHandler {
             String checkHP = st.nextToken();
             if(elementType.equals("www") && checkHP.equals("homepages")) {
                 if(currAuthorSet.size() > 0){
-                    HashSet<String> tempCurrSet= new HashSet<>();
+                    ArrayList<Person> tempCurrList= new ArrayList<>();
                     for(String s : currAuthorSet){
-                        tempCurrSet.add(s);
+                        Person p = new Person(s.toLowerCase());
+                        tempCurrList.add(p);
                     }
-                    DB.addAliasMapElement(key, tempCurrSet);
+                    DB.addAliasMapElement(key, tempCurrList);
                 }
+            }
+            else{
+
             }
             currAuthorSet.clear();
         }

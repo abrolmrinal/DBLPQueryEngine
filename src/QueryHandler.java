@@ -1,5 +1,6 @@
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class QueryHandler {
@@ -23,8 +24,18 @@ public class QueryHandler {
      */
     public void pubSearch_author(String i_name, int sortType){
         System.out.println("Starting Query1 --> search by author name: ");
-        HashSet<String> i_nameSet = new HashSet<>();
+        LinkedHashSet<String> i_nameSet = new LinkedHashSet<>();
         i_nameSet.add(i_name);
+        for(String tempKey : DB.getAliasMap().keySet()){
+            ArrayList<Person> tempListOfAliasPerson = DB.getAliasMap().get(tempKey);
+            ArrayList<String> tempListOfAliasNames = new ArrayList<>();
+            for(Person p : tempListOfAliasPerson ){
+                tempListOfAliasNames.add(p.getName());
+            }
+            if(tempListOfAliasNames.contains(i_name)){
+                i_nameSet.addAll(tempListOfAliasNames);
+            }
+        }
 
         System.out.println("Printing publications for these authors and first/middle/last name matches: ");
 
@@ -58,7 +69,7 @@ public class QueryHandler {
 
     public void pubSearch_title(String i_title, int sortType){
         System.out.println("Starting Query1 --> search by title tags: ");
-        HashSet<String> i_titleSet = new HashSet<>();
+        LinkedHashSet<String> i_titleSet = new LinkedHashSet<>();
         i_titleSet.add(i_title);
 
         System.out.println("Printing publications with these title tags: ");
@@ -115,6 +126,7 @@ public class QueryHandler {
         }
         Collections.sort(tempListOfPublications);
         printList(tempListOfPublications);
+        tempListOfPublications.clear();
     }
 
     public void sortByRelevanceAuthor(){
@@ -124,6 +136,7 @@ public class QueryHandler {
         }
         Collections.sort(tempListOfPublications, Publication.matchCountOrder);
         printList(tempListOfPublications);
+        tempListOfPublications.clear();
     }
 
     public void sortByRelevanceTitle(){
@@ -133,6 +146,7 @@ public class QueryHandler {
         }
         Collections.sort(tempListOfPublications, Publication.matchCountOrder );
         printList(tempListOfPublications);
+        tempListOfPublications.clear();
     }
 
     public void pubsSinceGivenYear(int year){
@@ -144,6 +158,7 @@ public class QueryHandler {
         }
         Collections.sort(tempListOfPublications, Collections.reverseOrder());
         printList(tempListOfPublications);
+        tempListOfPublications.clear();
     }
 
     public void pubsBetweenTwoYears(int year1, int year2){
@@ -155,5 +170,6 @@ public class QueryHandler {
         }
         Collections.sort(tempListOfPublications, Collections.reverseOrder());
         printList(tempListOfPublications);
+        tempListOfPublications.clear();
     }
 }
