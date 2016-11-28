@@ -25,22 +25,6 @@ public class QueryHandler {
         System.out.println("Starting Query1 --> search by author name: ");
         HashSet<String> i_nameSet = new HashSet<>();
         i_nameSet.add(i_name);
-/*
-        HashSet<String> i_nameParts = new HashSet<>();
-        StringTokenizer st1 = new StringTokenizer(i_name, " -");
-        while(st1.hasMoreTokens()){
-            i_nameParts.add(st1.nextToken());
-        }
-        HashSet<String> i_nameSet = new HashSet<>();
-        for(String key : DB.getAliasMap().keySet()){
-            HashSet<String> tempHashSet = DB.getAliasMap().get(key);
-            if(tempHashSet.contains(i_name)){
-                for(String s : tempHashSet){
-
-                    i_nameSet.add(s);
-                }
-            }
-        }*/
 
         System.out.println("Printing publications for these authors and first/middle/last name matches: ");
 

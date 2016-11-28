@@ -15,12 +15,6 @@ public class Person {
         name = i_name;
         pubList = new ArrayList<Publication>();
         pubCount = 0;
-
-        nameBreakUp = new HashSet<String>();
-        StringTokenizer s = new StringTokenizer(i_name, " -");
-        while(s.hasMoreTokens()){
-            nameBreakUp.add(s.nextToken());
-        }
     }
 
     public String getName() {
@@ -45,22 +39,6 @@ public class Person {
 
     public void setPubCount(int pubCount) {
         this.pubCount = pubCount;
-    }
-
-    public Set<String> getNameBreakUp() {
-        return nameBreakUp;
-    }
-
-    public void setNameBreakUp(Set<String> nameBreakUp) {
-        this.nameBreakUp = nameBreakUp;
-    }
-
-    public int getNumNameParts() {
-        return numNameParts;
-    }
-
-    public void setNumNameParts(int numNameParts) {
-        this.numNameParts = numNameParts;
     }
 
 }

@@ -137,13 +137,13 @@ class UserHandler extends DefaultHandler {
             }
             if(qName.equals("title")){
                 HashSet<String> titleParts = new HashSet<>();
-                StringTokenizer st = new StringTokenizer(title, " .()-,");
+                StringTokenizer st = new StringTokenizer(title, " .(),:;?[]{}_+=!@#$%^&*|'-");
                 while (st.hasMoreTokens()){
                     titleParts.add(st.nextToken().toLowerCase());
                 }
                 for(String tName : nameSetOrTitleSet){
                     HashSet<String> tNameParts = new HashSet<>();
-                    StringTokenizer st2 = new StringTokenizer(tName, " .()-,");
+                    StringTokenizer st2 = new StringTokenizer(tName, " .(),:;?[]{}_+=!@#$%^&*|'-");
                     while(st2.hasMoreTokens()){
                         tNameParts.add(st2.nextToken().toLowerCase());
                     }

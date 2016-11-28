@@ -102,21 +102,21 @@ public class DBManager {
         System.out.print("Query0 Sort0: Author name for search: ");
         String i_name = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_author(i_name, 0);
+        qHandler.pubSearch_author(i_name, 0);*/
 
-        ///Query0 - Sort1
+/*        ///Query0 - Sort1
         DB.setOfPublications = new HashSet<>();
         System.out.print("Query0 Sort1: Author name for search: ");
         String i_name = scanner.nextLine();
-        qHandler.pubSearch_author(i_name, 1);
+        qHandler.pubSearch_author(i_name, 1);*/
 
-        ///Query0 - Sort2
+/*        ///Query0 - Sort2
         DB.setOfPublications = new HashSet<>();
         System.out.print("Query0 Sort2: Author name for search: ");
         i_name = scanner.nextLine();
-        qHandler.pubSearch_author(i_name, 2);
+        qHandler.pubSearch_author(i_name, 2);*/
 
-        ///Query0 - Sort3
+/*        ///Query0 - Sort3
         DB.setOfPublications = new HashSet<>();
         System.out.print("Query0 Sort3: Author name for search: ");
         i_name = scanner.nextLine();
@@ -127,20 +127,20 @@ public class DBManager {
         String i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title, 0);
-/*
-        ///Query1 - Sort1
+
+/*        ///Query1 - Sort1
         System.out.print("Title tags for search: ");
         i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_title(i_title, 1);
+        qHandler.pubSearch_title(i_title, 1);*/
 
-        ///Query1 - Sort2
+/*        ///Query1 - Sort2
         System.out.print("Title tags for search: ");
         i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_title(i_title, 2);
+        qHandler.pubSearch_title(i_title, 2);*/
 
-        ///Query1 - Sort3
+/*        ///Query1 - Sort3
         System.out.print("Title tags for search: ");
         i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
