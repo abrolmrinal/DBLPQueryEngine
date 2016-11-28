@@ -35,7 +35,8 @@ class UserHandler extends DefaultHandler {
     private String year;
     private String volume;
     private String journalOrBookTitle;
-    private int matchCount;
+    private int matchCountAuthor;
+    private int matchCountTitle;
 
     private String pubType;
 
@@ -45,16 +46,19 @@ class UserHandler extends DefaultHandler {
         DB = OuterDB;
         nameSetOrTitleSet = i_nameSetOrTitleSet;
         queryType = i_queryType;
+        matchCountAuthor = 0;
+        matchCountTitle = 0;
     }
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
         if(qName.equals("author") || qName.equals("editor")){
+            matchCountAuthor = 0;
             bPerson = true;
             name = "";
         }
         if(qName.equals("title")){
-            matchCount = 0;
+            matchCountTitle = 0;
             bTitle = true;
             title = "";
         }
@@ -90,8 +94,26 @@ class UserHandler extends DefaultHandler {
         if(queryType == 0){
             if(qName.equals("author") || qName.equals("editor")){
                 currentPubAuthors.add(name);
-                if(nameSetOrTitleSet.contains(name)){
-                    foundPublication = true;
+
+                HashSet<String> nameParts = new HashSet<>();
+                StringTokenizer st2 = new StringTokenizer(name, " -");
+                while(st2.hasMoreTokens()){
+                    nameParts.add(st2.nextToken().toLowerCase());
+                }
+
+                for(String aName : nameSetOrTitleSet){
+                    HashSet<String> aNameParts = new HashSet<>();
+                    StringTokenizer st = new StringTokenizer(aName, " -");
+                    while(st.hasMoreTokens()){
+                        aNameParts.add(st.nextToken().toLowerCase());
+                    }
+
+                    for(String subPart : aNameParts){
+                        if(nameParts.contains(subPart)){
+                            matchCountAuthor++;
+                            foundPublication = true;
+                        }
+                    }
                 }
             }
 
@@ -102,6 +124,7 @@ class UserHandler extends DefaultHandler {
                         authors.add(aName);
                     }
                     Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
+                    tempPublication.setMatchCount(matchCountAuthor);
                     DB.addPublication(tempPublication);
                     foundPublication = false;
                 }
@@ -127,7 +150,7 @@ class UserHandler extends DefaultHandler {
                     for(String subPart : tNameParts){
                         if(titleParts.contains(subPart)){
                             foundPublication = true;
-                            matchCount++;
+                            matchCountTitle++;
                         }
                     }
                 }
@@ -139,7 +162,7 @@ class UserHandler extends DefaultHandler {
                         authors.add(aName);
                     }
                     Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
-                    tempPublication.setMatchCount(matchCount);
+                    tempPublication.setMatchCount(matchCountTitle);
                     DB.addPublication(tempPublication);
                     foundPublication = false;
                 }

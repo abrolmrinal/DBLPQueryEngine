@@ -24,6 +24,14 @@ public class QueryHandler {
     public void pubSearch_author(String i_name, int sortType){
         System.out.println("Starting Query1 --> search by author name: ");
         HashSet<String> i_nameSet = new HashSet<>();
+        i_nameSet.add(i_name);
+/*
+        HashSet<String> i_nameParts = new HashSet<>();
+        StringTokenizer st1 = new StringTokenizer(i_name, " -");
+        while(st1.hasMoreTokens()){
+            i_nameParts.add(st1.nextToken());
+        }
+        HashSet<String> i_nameSet = new HashSet<>();
         for(String key : DB.getAliasMap().keySet()){
             HashSet<String> tempHashSet = DB.getAliasMap().get(key);
             if(tempHashSet.contains(i_name)){
@@ -32,9 +40,9 @@ public class QueryHandler {
                     i_nameSet.add(s);
                 }
             }
-        }
+        }*/
 
-        System.out.println("Printing publications for these authors: ");
+        System.out.println("Printing publications for these authors and first/middle/last name matches: ");
 
         for(String aName : i_nameSet){
             System.out.println(aName);
@@ -54,7 +62,7 @@ public class QueryHandler {
         switch (sortType){
             case SORT_BY_REVERSE_DATE : sortByReverseDate();
                 break;
-            case SORT_BY_RELEVANCE : sortByRelevanceAuthor(i_name);
+            case SORT_BY_RELEVANCE : sortByRelevanceAuthor();
                 break;
             case PUBS_SINCE_GIVEN_YEAR : pubsSinceGivenYear(1980);
                 break;
@@ -125,17 +133,13 @@ public class QueryHandler {
         printList(tempListOfPublications);
     }
 
-    public void sortByRelevanceAuthor(String i_name){
-        LinkedHashSet<Publication> tempSetOfPublications = new LinkedHashSet<>();
+    public void sortByRelevanceAuthor(){
+        ArrayList<Publication> tempListOfPublications = new ArrayList<>();
         for(Publication tempPub : DB.getSetOfPublications()){
-            if(tempPub.getAuthors().contains(i_name)){
-                tempSetOfPublications.add(tempPub);
-            }
+            tempListOfPublications.add(tempPub);
         }
-        for(Publication tempPub : DB.getSetOfPublications()){
-            tempSetOfPublications.add(tempPub);
-        }
-        printSet(tempSetOfPublications);
+        Collections.sort(tempListOfPublications, Publication.matchCountOrder);
+        printList(tempListOfPublications);
     }
 
     public void sortByRelevanceTitle(){

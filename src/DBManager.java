@@ -84,13 +84,21 @@ public class DBManager {
     public static void main(String[] args) {
         DBManager DB = new DBManager();
 
+        int count = 0;
+
         DB.createAliasMap(DB);
+        System.out.println(DB.aliasMap.size());
+
+        for(String key : DB.aliasMap.keySet()){
+            count = count + DB.aliasMap.get(key).size();
+        }
+
+        System.out.println("number of authors: " + count);
 
         QueryHandler qHandler = new QueryHandler(DB);
 
         Scanner scanner = new Scanner(System.in);
-
-        ///Query0 - Sort0
+/*        ///Query0 - Sort0
         System.out.print("Query0 Sort0: Author name for search: ");
         String i_name = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
@@ -99,7 +107,7 @@ public class DBManager {
         ///Query0 - Sort1
         DB.setOfPublications = new HashSet<>();
         System.out.print("Query0 Sort1: Author name for search: ");
-        i_name = scanner.nextLine();
+        String i_name = scanner.nextLine();
         qHandler.pubSearch_author(i_name, 1);
 
         ///Query0 - Sort2
@@ -112,17 +120,17 @@ public class DBManager {
         DB.setOfPublications = new HashSet<>();
         System.out.print("Query0 Sort3: Author name for search: ");
         i_name = scanner.nextLine();
-        qHandler.pubSearch_author(i_name, 3);
+        qHandler.pubSearch_author(i_name, 3);*/
 
         ///Query1 - Sort0
         System.out.print("Title tags for search: ");
         String i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title, 0);
-
+/*
         ///Query1 - Sort1
         System.out.print("Title tags for search: ");
-        String i_title = scanner.nextLine();
+        i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title, 1);
 
@@ -136,7 +144,7 @@ public class DBManager {
         System.out.print("Title tags for search: ");
         i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_title(i_title, 3);
+        qHandler.pubSearch_title(i_title, 3);*/
 
     }
 }

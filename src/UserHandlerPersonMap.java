@@ -3,6 +3,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.HashSet;
+import java.util.StringTokenizer;
 
 public class UserHandlerPersonMap extends DefaultHandler {
     private DBManager DB;
@@ -18,7 +19,7 @@ public class UserHandlerPersonMap extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException{
-        if(qName.equals("author")) {
+        if(qName.equals("author") || qName.equals("editor")) {
             bPerson = true;
             name = "";
         }
@@ -38,16 +39,20 @@ public class UserHandlerPersonMap extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException{
-        if(qName.equals("author")){
+        if(qName.equals("author") || qName.equals("editor")){
             currAuthorSet.add(name);
         }
         if(qName.equals(elementType)){
-            if(elementType.equals("www")) {
-                HashSet<String> tempCurrSet= new HashSet<>();
-                for(String s : currAuthorSet){
-                    tempCurrSet.add(s);
+            StringTokenizer st = new StringTokenizer(key, "/");
+            String checkHP = st.nextToken();
+            if(elementType.equals("www") && checkHP.equals("homepages")) {
+                if(currAuthorSet.size() > 0){
+                    HashSet<String> tempCurrSet= new HashSet<>();
+                    for(String s : currAuthorSet){
+                        tempCurrSet.add(s);
+                    }
+                    DB.addAliasMapElement(key, tempCurrSet);
                 }
-                DB.addAliasMapElement(key, tempCurrSet);
             }
             currAuthorSet.clear();
         }
