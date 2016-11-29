@@ -153,7 +153,7 @@ public class DBManager {
 
 /*        ///Query1 - Sort1
         System.out.print("Title tags for search: ");
-        i_title = scanner.nextLine();
+        String i_title = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title.toLowerCase(), 1);*/
 

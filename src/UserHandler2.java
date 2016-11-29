@@ -33,7 +33,6 @@ public class UserHandler2 extends DefaultHandler{
     @Override
     public void characters(char[] ch, int start, int length){
         if(bPerson){
-            bPerson = false;
             name += new String(ch, start, length);
         }
     }
@@ -42,6 +41,7 @@ public class UserHandler2 extends DefaultHandler{
     public void endElement(String uri, String localName, String qName) throws SAXException{
         if(qName.equals("author") || qName.equals("editor")){
             currAuthorSet.add(name);
+            bPerson = false;
         }
         if(qName.equals(elementType)){
             if(!elementType.equals("www")){

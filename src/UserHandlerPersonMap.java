@@ -31,7 +31,6 @@ public class UserHandlerPersonMap extends DefaultHandler {
     @Override
     public void characters(char[] ch, int start, int length){
         if(bPerson){
-            bPerson = false;
             name += new String(ch, start, length);
         }
     }
@@ -40,6 +39,7 @@ public class UserHandlerPersonMap extends DefaultHandler {
     public void endElement(String uri, String localName, String qName) throws SAXException{
         if(qName.equals("author") || qName.equals("editor")){
             currAuthorSet.add(name);
+            bPerson = false;
         }
         if(qName.equals(elementType)){
             StringTokenizer st = new StringTokenizer(key, "/");

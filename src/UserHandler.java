@@ -135,6 +135,7 @@ class UserHandler extends DefaultHandler {
                 if(matchCountAuthor > prevMatchCountAuthor){
                     prevMatchCountAuthor = matchCountAuthor;
                 }
+                bPerson = false;
             }
 
             if(qName.equals(pubType)){
@@ -151,10 +152,15 @@ class UserHandler extends DefaultHandler {
                 }
                 currentPubAuthors.clear();
             }
+
+            if(qName.equals("title")){
+                bTitle = false;
+            }
         }
         else if(queryType == 1){
             if(qName.equals("author") || qName.equals("editor")){
                 currentPubAuthors.add(name);
+                bPerson = false;
             }
             if(qName.equals("title")){
                 LinkedHashSet<String> titleParts = new LinkedHashSet<>();
@@ -175,6 +181,7 @@ class UserHandler extends DefaultHandler {
                         }
                     }
                 }
+                bTitle = false;
             }
             if(qName.equals(pubType)){
                 if(foundPublication == true){
@@ -190,33 +197,39 @@ class UserHandler extends DefaultHandler {
                 currentPubAuthors.clear();
             }
         }
+        if(qName.equals("pages")){
+            bPages = false;
+        }
+        if(qName.equals("year")){
+            bYear = false;
+        }
+        if(qName.equals("volume")){
+            bVolume = false;
+        }
+        if(qName.equals("journal") || qName.equals("booktitle")){
+            bJournalOrBookTitle = false;
+        }
     }
 
     @Override
     public void characters(char[] ch, int start, int length){
         if(bPerson){
             name += new String(ch, start, length);
-            bPerson = false;
         }
         if(bTitle){
             title += new String(ch, start, length);
-            bTitle = false;
         }
         if(bPages){
             pages += new String(ch, start, length);
-            bPages = false;
         }
         if(bYear){
             year += new String(ch, start, length);
-            bYear = false;
         }
         if(bVolume){
             volume += new String(ch, start, length);
-            bVolume = false;
         }
         if(bJournalOrBookTitle){
             journalOrBookTitle += new String(ch, start, length);
-            bJournalOrBookTitle = false;
         }
     }
 
