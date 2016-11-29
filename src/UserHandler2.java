@@ -4,6 +4,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 
 public class UserHandler2 extends DefaultHandler{
@@ -16,7 +17,7 @@ public class UserHandler2 extends DefaultHandler{
 
     private String key;
 
-    private HashSet<String> currAuthorSet;
+    private LinkedHashSet<String> currAuthorSet;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
@@ -25,7 +26,6 @@ public class UserHandler2 extends DefaultHandler{
             name = "";
         }
         if(atts.getLength() > 0 && (atts.getValue("key") != null)){
-            key = atts.getValue("key");
             elementType = qName;
         }
     }
@@ -45,18 +45,9 @@ public class UserHandler2 extends DefaultHandler{
         }
         if(qName.equals(elementType)){
             if(!elementType.equals("www")){
-                for(String tempName : currAuthorSet){
-                    for(String tempKey : DB.getAliasMap().keySet()){
-                        ArrayList<Person> tempListOfAliasPerson = DB.getAliasMap().get(tempKey);
-                        ArrayList<String> tempListofAliasNames = new ArrayList<>();
-                        for(Person tempPerson : tempListOfAliasPerson){
-                            tempListofAliasNames.add(tempPerson.getName());
-                        }
-                        if(tempListofAliasNames.contains(tempName)){
-                            int prev_count = DB.getPubCount().get(tempKey);
-                            DB.getPubCount().put(key, prev_count + 1);
-                            System.out.println(prev_count);
-                        }
+                for(String sName : currAuthorSet){
+                    if(DB.getAuthorMap().get(sName) != null){
+                        DB.incrementPubCountKey(DB.getAuthorMap().get(sName));
                     }
                 }
             }
@@ -65,7 +56,7 @@ public class UserHandler2 extends DefaultHandler{
     }
 
     public UserHandler2(DBManager outerDB){
-        currAuthorSet = new HashSet<>();
+        currAuthorSet = new LinkedHashSet<>();
         DB = outerDB;
     }
 }

@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
@@ -12,13 +14,6 @@ public class QueryHandler2 {
     public void authorMoreThanKPub(int k){
         System.out.println("Starting query 2");
 
-        /**
-         * initializing pubCount map
-         */
-
-        for(String tempKey : DB.getAliasMap().keySet()){
-            DB.getPubCount().put(tempKey, 0);
-        }
 
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -30,17 +25,17 @@ public class QueryHandler2 {
         catch(Exception e){
             e.printStackTrace();
         }
-        System.out.println("Pub count size: " + DB.getPubCount().size());
-
 
         System.out.println("List of authors with more than " + k + " publications: ");
-        HashMap<String, Integer> sortedMap = sortByValues(DB.getPubCount());
-        for(String tempKey : sortedMap.keySet()){
-            ArrayList<Person> tempListOfAliasNames = DB.getAliasMap().get(tempKey);
-            if(sortedMap.get(tempKey) >= k){
-                System.out.println(tempListOfAliasNames.get(0).getName() + sortedMap.get(tempKey));
+        HashMap<String, Integer> sortedMap = sortByValues(DB.getPubCountKey());
+
+        for(String pName : sortedMap.keySet()){
+            if(sortedMap.get(pName) >= k){
+                System.out.print(pName+ " --- ");
+                System.out.println(sortedMap.get(pName));
             }
         }
+
     }
 
     private static HashMap<String, Integer> sortByValues(Map<String, Integer> pubCount){

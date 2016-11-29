@@ -2,9 +2,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class UserHandlerPersonMap extends DefaultHandler {
     private DBManager DB;
@@ -16,7 +14,7 @@ public class UserHandlerPersonMap extends DefaultHandler {
 
     private String key;
 
-    private HashSet<String> currAuthorSet;
+    private LinkedHashSet<String> currAuthorSet;
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException{
@@ -49,22 +47,24 @@ public class UserHandlerPersonMap extends DefaultHandler {
             if(elementType.equals("www") && checkHP.equals("homepages")) {
                 if(currAuthorSet.size() > 0){
                     ArrayList<Person> tempCurrList= new ArrayList<>();
-                    for(String s : currAuthorSet){
+                    String primaryName = currAuthorSet.iterator().next();
+                    Iterator it = currAuthorSet.iterator();
+                    while(it.hasNext()){
+                        String s = (String) it.next();
                         Person p = new Person(s.toLowerCase());
                         tempCurrList.add(p);
+                        DB.addAuthorMapElement(s, primaryName);
+
                     }
                     DB.addAliasMapElement(key, tempCurrList);
                 }
-            }
-            else{
-
             }
             currAuthorSet.clear();
         }
     }
 
     public UserHandlerPersonMap(DBManager outerDB){
-        currAuthorSet = new HashSet<>();
+        currAuthorSet = new LinkedHashSet<>();
         DB = outerDB;
     }
 }

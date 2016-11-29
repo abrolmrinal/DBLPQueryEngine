@@ -9,19 +9,23 @@ public class DBManager {
     private Set<Publication> setOfPublications;
 
     private Map<String, ArrayList<Person>> aliasMap;
-    private Map<String, Integer> pubCount;
+    private Map<String, String> authorMap;  /** Author Name , Primary Author */
+    private Map<String, Integer> pubCountKey; /** WWW main author, Publication Count for all Aliases */
 
     public Set<Publication> getSetOfPublications() {
         return setOfPublications;
     }
 
-
     public Map<String, ArrayList<Person>> getAliasMap() {
         return aliasMap;
     }
 
-    public Map<String, Integer> getPubCount() {
-        return pubCount;
+    public Map<String, String> getAuthorMap() {
+        return authorMap;
+    }
+
+    public Map<String, Integer> getPubCountKey() {
+        return pubCountKey;
     }
 
     public void addPublication(Publication tempPublication){
@@ -30,6 +34,20 @@ public class DBManager {
 
     public void addAliasMapElement(String key, ArrayList<Person> authorSet){
         aliasMap.put(key, authorSet);
+    }
+
+    public void addAuthorMapElement(String secondaryName, String primaryName){
+        authorMap.put(secondaryName, primaryName);
+    }
+
+    public void incrementPubCountKey(String primaryName){
+        if(pubCountKey.get(primaryName) != null){
+            int prevValue = pubCountKey.get(primaryName);
+            pubCountKey.put(primaryName, prevValue + 1);
+        }
+        else{
+            pubCountKey.put(primaryName, 1);
+        }
     }
 
     public void createAliasMap(DBManager DB){
@@ -66,6 +84,7 @@ public class DBManager {
 
     public DBManager() {
         aliasMap = new HashMap<>();
+        authorMap = new HashMap<>();
 
     }
 
@@ -86,13 +105,27 @@ public class DBManager {
         QueryHandler qHandler = new QueryHandler(DB);
         QueryHandler2 qHandler2 = new QueryHandler2(DB);
 
+        /**prints alias map*/
+/*        for(String tempKey : DB.aliasMap.keySet()){
+            ArrayList<Person> sample = DB.aliasMap.get(tempKey);
+            System.out.print(tempKey + ": ");
+            for(Person p : sample){
+                System.out.print(p.getName() + " | ");
+            }
+            System.out.println();
+        }*/
+
+/*        for(String sName : DB.authorMap.keySet()){
+            System.out.println(sName + " --- " + DB.authorMap.get(sName));
+        }*/
+
         Scanner scanner = new Scanner(System.in);
 
-        ///Query0 - Sort0
+/*        ///Query0 - Sort0
         System.out.print("Query0 Sort0: Author name for search: ");
         String i_name = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_author(i_name.toLowerCase(), 1);
+        qHandler.pubSearch_author(i_name.toLowerCase(), 1);*/
 
 /*        ///Query0 - Sort1
         DB.setOfPublications = new HashSet<>();
@@ -136,8 +169,10 @@ public class DBManager {
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title.toLowerCase(), 3);*/
 
-/*        DB.pubCount = new HashMap<>();
-        qHandler2.authorMoreThanKPub(500);*/
+        DB.pubCountKey = new HashMap<>();
+        System.out.print("Enter lower bound for number of publications:- ");
+        int kPublications = scanner.nextInt();
+        qHandler2.authorMoreThanKPub(kPublications);
 
     }
 }
