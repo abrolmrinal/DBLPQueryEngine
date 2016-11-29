@@ -7,12 +7,15 @@ import java.util.*;
 public class QueryHandler2 {
     DBManager DB;
 
+    public ArrayList<String> authorListMoreThanK;
+
     public QueryHandler2(DBManager outerDB){
         DB = outerDB;
     }
 
     public void authorMoreThanKPub(int k){
         System.out.println("Starting query 2");
+        System.out.println("List of authors with more than " + k + " publications: ");
 
 
         try {
@@ -26,13 +29,13 @@ public class QueryHandler2 {
             e.printStackTrace();
         }
 
-        System.out.println("List of authors with more than " + k + " publications: ");
         HashMap<String, Integer> sortedMap = sortByValues(DB.getPubCountKey());
 
+        authorListMoreThanK = new ArrayList<>();
         for(String pName : sortedMap.keySet()){
             if(sortedMap.get(pName) >= k){
-                System.out.print(pName+ " --- ");
-                System.out.println(sortedMap.get(pName));
+//                System.out.println(pName);
+                authorListMoreThanK.add(pName);
             }
         }
 

@@ -1,7 +1,9 @@
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import javax.swing.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 
@@ -40,6 +42,14 @@ public class DBManager {
 
     public void addAuthorMapElement(String secondaryName, String primaryName){
         authorMap.put(secondaryName, primaryName);
+    }
+
+    public void initializeSetOfPublications(){
+        setOfPublications = new HashSet<>();
+    }
+
+    public void initializePubCountKey(){
+        pubCountKey = new HashMap<String, Integer>();
     }
 
     public void incrementPubCountKey(String primaryName){
@@ -108,6 +118,11 @@ public class DBManager {
         QueryHandler qHandler = new QueryHandler(DB);
         QueryHandler2 qHandler2 = new QueryHandler2(DB);
 
+        GUIHandler guiHandler = new GUIHandler(DB, qHandler, qHandler2);
+        guiHandler.setVisible(true);
+        guiHandler.setSize(new Dimension(1500, 1000));
+        guiHandler.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         /**prints alias map*/
 /*        for(String tempKey : DB.aliasMap.keySet()){
             ArrayList<Person> sample = DB.aliasMap.get(tempKey);
@@ -124,11 +139,11 @@ public class DBManager {
 
         Scanner scanner = new Scanner(System.in);
 
-        ///Query0 - Sort0
+/*        ///Query0 - Sort0
         System.out.print("Query0 Sort0: Author name for search: ");
         String i_name = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_author(i_name.toLowerCase(), 1);
+        qHandler.pubSearch_author(i_name.toLowerCase(), 1);*/
 
 /*        ///Query0 - Sort1
         DB.setOfPublications = new HashSet<>();
@@ -176,6 +191,7 @@ public class DBManager {
         System.out.print("Enter lower bound for number of publications:- ");
         int kPublications = scanner.nextInt();
         qHandler2.authorMoreThanKPub(kPublications);*/
+
 
     }
 }
