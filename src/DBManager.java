@@ -5,6 +5,11 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class DBManager {
     /**
      * class that contains the main method.

@@ -4,6 +4,11 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class QueryHandler2 {
     /**
      * This class handles Query2, it initiates and calls the

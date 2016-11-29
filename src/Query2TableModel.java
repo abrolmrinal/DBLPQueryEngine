@@ -1,6 +1,10 @@
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
 
 public class Query2TableModel extends AbstractTableModel{
     /**

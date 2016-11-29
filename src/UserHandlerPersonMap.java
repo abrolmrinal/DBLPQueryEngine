@@ -4,6 +4,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class UserHandlerPersonMap extends DefaultHandler {
     /**
      * This class is used by the parser that produces the HashMap

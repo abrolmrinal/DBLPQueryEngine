@@ -1,5 +1,11 @@
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
+
 public class Publication implements Comparable<Publication> {
     /**
      * Publication class that defines a single Publication in the database.

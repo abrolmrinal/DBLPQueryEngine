@@ -10,6 +10,11 @@ import java.awt.event.ItemListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class GUIHandler extends JFrame implements ItemListener{
     /**
      * Main GUI Handler Class that contains all the components and

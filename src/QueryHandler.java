@@ -5,6 +5,11 @@ import javax.xml.parsers.SAXParserFactory;
 import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class QueryHandler {
     /**
      * This class handles Query1, it helps build up a  set of

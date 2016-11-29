@@ -4,6 +4,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 class UserHandler extends DefaultHandler {
     /**
      * This class is the handles parsing for Query1. It basically helps

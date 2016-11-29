@@ -2,6 +2,11 @@ import javax.print.DocFlavor;
 import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class Query1TableModel extends AbstractTableModel {
     /**
      * Class that defines the basic model for Table for query1 search.

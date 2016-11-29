@@ -7,6 +7,11 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 
+/**
+ * @author Mrinal Abrol(2015062)
+ * @author Shashwat Malik(2015092)
+ */
+
 public class UserHandler2 extends DefaultHandler{
     /** This class manages parsing for query2, it
      * basically helps build up a HashMap that maps
