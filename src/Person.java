@@ -1,6 +1,7 @@
-import java.util.*;
-
 public class Person {
+    /**
+     * Person Class that defines a single Person in the database
+     */
     private String name;
 
 

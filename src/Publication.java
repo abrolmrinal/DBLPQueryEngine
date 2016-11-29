@@ -1,6 +1,9 @@
 import java.util.*;
 
 public class Publication implements Comparable<Publication> {
+    /**
+     * Publication class that defines a single Publication in the database.
+     */
     private HashSet<String> authors;
     private String title;
     private String pages;

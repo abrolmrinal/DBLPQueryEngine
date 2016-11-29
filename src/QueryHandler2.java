@@ -5,6 +5,12 @@ import javax.xml.parsers.SAXParserFactory;
 import java.util.*;
 
 public class QueryHandler2 {
+    /**
+     * This class handles Query2, it initiates and calls the
+     * parser for building up author map, maintains a count
+     * for every alias name and also a total count
+     * for primary authors;
+     */
     DBManager DB;
 
     public ArrayList<String> authorListMoreThanK;

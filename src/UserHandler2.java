@@ -8,6 +8,10 @@ import java.util.LinkedHashSet;
 import java.util.StringTokenizer;
 
 public class UserHandler2 extends DefaultHandler{
+    /** This class manages parsing for query2, it
+     * basically helps build up a HashMap that maps
+     * all alias names to their primary author name
+     */
     private DBManager DB;
 
     private String elementType;

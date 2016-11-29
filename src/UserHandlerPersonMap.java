@@ -5,6 +5,13 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.*;
 
 public class UserHandlerPersonMap extends DefaultHandler {
+    /**
+     * This class is used by the parser that produces the HashMap
+     * on which Entity Resolution is based.
+     * As www tags with title of the format: homepages/* are found,
+     * an entry is made in the HashMap that stores these results
+     */
+
     private DBManager DB;
 
     private String elementType;

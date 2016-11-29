@@ -3,6 +3,10 @@ import javax.swing.table.AbstractTableModel;
 import java.util.*;
 
 public class Query1TableModel extends AbstractTableModel {
+    /**
+     * Class that defines the basic model for Table for query1 search.
+     * The data that goes into the table is initialised in constructor
+     */
 
     private static int SNO = 0;
     private static int AUTHORS = 1;

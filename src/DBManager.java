@@ -1,5 +1,3 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import javax.swing.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -8,6 +6,14 @@ import java.io.*;
 import java.util.*;
 
 public class DBManager {
+    /**
+     * class that contains the main method.
+     * Contains objects of all Handler classes and connects all the classes together.
+     * This is the base of the MVC designer patterns.
+     * Model -> Main Class along with the Query and GUI handler classes
+     * View -> Output Table on the right of the GUI
+     * Controller -> Input Panel on the left of the GUI, selects Inputs that controls the output of the Table
+     */
     File dblp = new File("dblp.xml");
 
     private Set<Publication> setOfPublications;

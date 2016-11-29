@@ -3,6 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Query2TableModel extends AbstractTableModel{
+    /**
+     * This class defines the basic model for table that
+     * is used to display results of query2.
+     * The data to be filled in the table is added
+     * within the constructor
+     */
     private List<String> nameOfAuthors;
 
     private static int SNO = 0;

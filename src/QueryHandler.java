@@ -6,6 +6,12 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class QueryHandler {
+    /**
+     * This class handles Query1, it helps build up a  set of
+     * Publications depending upon queryType
+     * This set of Publications is further processed depending
+     * upon filterType and sortType.
+     */
     DBManager DB;
     /**
      * Constants for Query 1
@@ -159,7 +165,7 @@ public class QueryHandler {
         }
         resultArrayList = new ArrayList<>();
         resultArrayList.addAll(tempListOfPublications);
-        printList(tempListOfPublications);
+//        printList(tempListOfPublications);
         tempListOfPublications.clear();
     }
 
@@ -180,7 +186,7 @@ public class QueryHandler {
         }
         resultArrayList = new ArrayList<>();
         resultArrayList.addAll(tempListOfPublications);
-        printList(tempListOfPublications);
+//        printList(tempListOfPublications);
         tempListOfPublications.clear();
     }
 
@@ -202,7 +208,7 @@ public class QueryHandler {
         }
         resultArrayList = new ArrayList<>();
         resultArrayList.addAll(tempListOfPublications);
-        printList(tempListOfPublications);
+//        printList(tempListOfPublications);
         tempListOfPublications.clear();
     }
 

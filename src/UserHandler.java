@@ -5,6 +5,10 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.util.*;
 
 class UserHandler extends DefaultHandler {
+    /**
+     * This class is the handles parsing for Query1. It basically helps
+     * build up set of publications depending upon what search type it is.
+     */
     private DBManager DB;
     /**
      * nameOrTitle :- query 1 search for publications by author name or title
