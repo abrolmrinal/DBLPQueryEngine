@@ -24,6 +24,7 @@ class UserHandler extends DefaultHandler {
     private boolean bYear;
     private boolean bVolume;
     private boolean bJournalOrBookTitle;
+    private boolean bURL;
 
     private boolean isPerson;
 
@@ -34,6 +35,7 @@ class UserHandler extends DefaultHandler {
     private String year;
     private String volume;
     private String journalOrBookTitle;
+    private String URL;
 
     private int prevMatchCountAuthor;
     private int matchCountAuthor;
@@ -96,6 +98,10 @@ class UserHandler extends DefaultHandler {
             bJournalOrBookTitle = true;
             journalOrBookTitle = "";
         }
+        if(qName.equals("url")){
+            bURL = true;
+            URL = "";
+        }
         if((atts.getLength()) > 0){
             if((atts.getValue("key") != null)){
                 pubType = qName;
@@ -144,7 +150,7 @@ class UserHandler extends DefaultHandler {
                     for(String aName : currentPubAuthors){
                         authors.add(aName);
                     }
-                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
+                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle, URL);
                     tempPublication.setMatchCount(prevMatchCountAuthor);
                     prevMatchCountAuthor = -1;
                     DB.addPublication(tempPublication);
@@ -189,7 +195,7 @@ class UserHandler extends DefaultHandler {
                     for(String aName : currentPubAuthors){
                         authors.add(aName);
                     }
-                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle);
+                    Publication tempPublication = new Publication(authors, title, pages, year, volume, journalOrBookTitle, URL);
                     tempPublication.setMatchCount(matchCountTitle);
                     DB.addPublication(tempPublication);
                     foundPublication = false;
@@ -208,6 +214,9 @@ class UserHandler extends DefaultHandler {
         }
         if(qName.equals("journal") || qName.equals("booktitle")){
             bJournalOrBookTitle = false;
+        }
+        if(qName.equals("url")){
+            bURL = false;
         }
     }
 
@@ -230,6 +239,9 @@ class UserHandler extends DefaultHandler {
         }
         if(bJournalOrBookTitle){
             journalOrBookTitle += new String(ch, start, length);
+        }
+        if(bURL){
+            URL += new String(ch, start, length);
         }
     }
 

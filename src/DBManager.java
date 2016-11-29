@@ -1,3 +1,5 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
@@ -78,6 +80,7 @@ public class DBManager {
         System.out.println("Year: " + p.getYear());
         System.out.println("Volume: " + p.getVolume());
         System.out.println("journalOrBookTitle: " + p.getJournalOrBookTitle());
+        System.out.println("URL: " + p.getURL());
         System.out.println("relevance: " + p.getMatchCount());
         System.out.println("===================================================");
     }
@@ -121,11 +124,11 @@ public class DBManager {
 
         Scanner scanner = new Scanner(System.in);
 
-/*        ///Query0 - Sort0
+        ///Query0 - Sort0
         System.out.print("Query0 Sort0: Author name for search: ");
         String i_name = scanner.nextLine();
         DB.setOfPublications = new HashSet<>();
-        qHandler.pubSearch_author(i_name.toLowerCase(), 1);*/
+        qHandler.pubSearch_author(i_name.toLowerCase(), 1);
 
 /*        ///Query0 - Sort1
         DB.setOfPublications = new HashSet<>();
@@ -169,10 +172,10 @@ public class DBManager {
         DB.setOfPublications = new HashSet<>();
         qHandler.pubSearch_title(i_title.toLowerCase(), 3);*/
 
-        DB.pubCountKey = new HashMap<>();
+/*        DB.pubCountKey = new HashMap<>();
         System.out.print("Enter lower bound for number of publications:- ");
         int kPublications = scanner.nextInt();
-        qHandler2.authorMoreThanKPub(kPublications);
+        qHandler2.authorMoreThanKPub(kPublications);*/
 
     }
 }

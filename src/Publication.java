@@ -7,10 +7,10 @@ public class Publication implements Comparable<Publication> {
     private int year;
     private String volume;
     private String journalOrBookTitle;
-
+    private String URL;
     private int matchCount;
 
-    public Publication(HashSet<String> i_authors, String i_title, String i_pages, String i_year, String i_volume, String i_journalOrBookTitle){
+    public Publication(HashSet<String> i_authors, String i_title, String i_pages, String i_year, String i_volume, String i_journalOrBookTitle, String i_URL){
         authors = new HashSet<>();
         title = i_title;
         authors = i_authors;
@@ -18,6 +18,7 @@ public class Publication implements Comparable<Publication> {
         year = Integer.parseInt(i_year);
         volume = i_volume;
         journalOrBookTitle = i_journalOrBookTitle;
+        URL = i_URL;
 
         matchCount = 0;
     }
@@ -75,6 +76,14 @@ public class Publication implements Comparable<Publication> {
 
     public void setJournalOrBookTitle(String journalOrBookTitle) {
         this.journalOrBookTitle = journalOrBookTitle;
+    }
+
+    public String getURL() {
+        return URL;
+    }
+
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
     public int getMatchCount() {
